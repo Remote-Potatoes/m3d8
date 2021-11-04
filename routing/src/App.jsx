@@ -1,45 +1,112 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { Component, useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { Route, Routes, Link } from "react-router-dom";
+import HomePage from "./pages/Home.page";
+import AboutPage from "./pages/About.page";
+import SinglePost from "./pages/SinglePost.page";
+
+// main package
+// react-router-dom
+// Single Page App
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <nav>
+        <Link to="/">Home</Link>
+        <br />
+        <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/posts/:postId" element={<SinglePost />} />
+      </Routes>
+
+      {/* {currentPage === "Home" ? <HomePage /> : <AboutPage />} */}
     </div>
-  )
+  );
 }
 
-export default App
+class App2 extends Component {
+  state = {
+    count: 0,
+    multipleStates: [],
+  };
+
+  increment() {
+    this.setState({ count: this.state.count + 1 });
+  }
+
+  addState() {
+    this.setState({
+      multipleStates: [...this.state.multipleStates, "hello"],
+    });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <nav>
+          <Link to="/">Home</Link>
+          <br />
+          <Link to="/about">About</Link>
+        </nav>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          {/* <Route path="/posts/:postId" element={<SinglePost />} /> */}
+        </Routes>
+
+        {/* {currentPage === "Home" ? <HomePage /> : <AboutPage />} */}
+      </div>
+    );
+  }
+}
+
+function useCountAndMultipleStates() {
+  const [count, setCount] = useState(0);
+  const [multipleStates, setMultipleStates] = useState([]);
+
+  const increment = () => {
+    setCount(count + 1);
+  };
+
+  function addState() {
+    setMultipleStates([...multipleStates, "hello"]);
+  }
+
+  return {
+    count,
+    multipleStates,
+    increment,
+    addState,
+  };
+}
+
+function App3() {
+  const { count, multipleStates, increment, addState } =
+    useCountAndMultipleStates();
+
+  return (
+    <div className="App">
+      <nav>
+        <Link to="/">Home</Link>
+        <br />
+        <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        {/* <Route path="/posts/:postId" element={<SinglePost />} /> */}
+      </Routes>
+
+      {/* {currentPage === "Home" ? <HomePage /> : <AboutPage />} */}
+    </div>
+  );
+}
+
+export default App;
